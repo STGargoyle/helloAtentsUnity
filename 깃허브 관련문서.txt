@@ -1,0 +1,7 @@
+github 저장소 생성 (깃허브 사이트에서 해야됨)
+github 클론 만들기 (소스트리로 해결, gui방식으로 하기 위해서)
+Commit 커밋하기 : Save (저장을 원하는 파일을 묶어서 커밋)
+Add(스테이지에 올리기)
+Push 하기
+
+https://github.com/STGargoyle/helloAtentsUnity
