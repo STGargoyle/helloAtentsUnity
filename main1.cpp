@@ -1,27 +1,32 @@
-#include<cstdlib> // 동적할당 rand(), srand, MAX_RAND 등등
-#include<cstdio>
-#include<ctime>
-#include<cstring> // strlen, strcpy_s 등등 사용하기 위해서
-#include<iostream> // c++에서 입출력 헤더
+#include<cstdlib>
+#include<iostream>
+#include<cstring>
 
-using namespace std; // 한번만 선언하고 그 뒤로는 생략을 명시하겠다는 의미
+using namespace std;
 
-int main() {
-	/*int num = 20;
-	std::cout << "Hello Atents!" << '\n';
-	std::cout << "Hello << ' ' << Atents!" << std::endl;
-	std::cout << 3.1415 << std::endl;
-	printf("%f \n", 3.1415);*/
+namespace BestComImpl // 위에서 선언을 먼저 하고
+{
+	void SimpleFunc();
+}
 
-	/*int val1;
-	cout << "첫 번째 숫자입력: ";
-	cin >> val1;
-	int val2;
-	cout << "두 번째 숫자입력: ";
-	cin >> val2;
-	int result = val1 + val2;
-	cout << "덧셈 결과: " << result << endl;*/
+namespace ProgComImpl
+{
+	void SimpleFunc();
+}
 
-	
+int main() {   // 범위 지정 연산자 잘 기억해둘 것.
+	BestComImpl::SimpleFunc(); // 함수명이 같아도 namespace가 다르기 때문에
+	ProgComImpl::SimpleFunc(); // 알아서 따로 따로 처리가 된다.
+	                           // 실무에서도 많이 쓰게 될 것이니 잘 새겨놓는게 좋다.
 	return 0;
+}
+
+void BestComImpl::SimpleFunc() // 아래에서 정의를 한다.
+{
+	cout << "BestCom이 정의한 함수" << endl;
+}
+
+void ProgComImpl::SimpleFunc()
+{
+	cout << "ProgCom이 정의한 함수" << endl;
 }

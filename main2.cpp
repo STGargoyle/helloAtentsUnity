@@ -1,28 +1,17 @@
-#include<cstdlib>
-#include<cstdio>
-#include<ctime>
-#include<cstring>
 #include<iostream>
+#include<cstdlib>
+#include<cstring>
 
-using namespace std;
+// using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
 
 int main() {
-	int val1, val2;
-	int result = 0;
-	cout << "두 개의 숫자입력: ";
-	cin >> val1 >> val2;
-
-	if (val1 < val2)
-	{
-		for (int i = val1 + 1; i < val2; i++)
-			result += i;
-	}
-	else
-	{
-		for (int i = val2 + 1; i < val1; i++)
-			result += i;
-	}
-	cout << "두 수 사이의 정수 합: " << result << endl;
-
+	int num = 20;
+	cout << "Hello World!" << endl;
+	cout << "Hello " << "World!" << endl;
+	cout << num << ' ' << 'A'; // endl을 작성해야 줄을 바꾸기 때문에 
+	cout << ' ' << 3.14 << endl; // 아랫줄도 그대로 이어져서 작성된다.
 	return 0;
 }
