@@ -1,17 +1,14 @@
-#include<iostream>
-#include<cstdlib>
-#include<cstring>
+#include "Header.h"
 
-// using namespace std;
-using std::cout;
-using std::cin;
-using std::endl;
+int main()
+{
+    Car run99;
+    run99.InitMembers ("run99", 100);
+    run99.Accel();
+    run99.Accel();
+    run99.ShowCarState();
+    run99.Break();
+    run99.ShowCarState();
 
-int main() {
-	int num = 20;
-	cout << "Hello World!" << endl;
-	cout << "Hello " << "World!" << endl;
-	cout << num << ' ' << 'A'; // endl을 작성해야 줄을 바꾸기 때문에 
-	cout << ' ' << 3.14 << endl; // 아랫줄도 그대로 이어져서 작성된다.
-	return 0;
+    return  0;
 }
