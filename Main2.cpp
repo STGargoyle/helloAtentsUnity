@@ -1,140 +1,74 @@
-#include "BinarySearchTree.h"
+#include "Default.h"
 
-BSTNode* BST_CreateNode(ElementType NewData)
+class Person
 {
-	BSTNode* NewNode = (BSTNode*)malloc(sizeof(BSTNode));
-	NewNode->Left = NULL;
-	NewNode->Right = NULL;
-	NewNode->Data = NewData;
-
-	return NewNode;
-}
-
-void BST_DestroyNode(BSTNode* Node)
-{
-	free(Node);
-}
-
-void BST_DestroyTree(BSTNode* tree)
-{
-	if (tree->Right != NULL)
-		BST_DestroyTree(tree->Right);
-
-	if (tree->Left != NULL)
-		BST_DestroyTree(tree->Left);
-
-	tree->Left = NULL;
-	tree->Right = NULL;
-
-	BST_DestroyNode(tree);
-}
-
-BSTNode* BST_SearchNode(BSTNode* tree, ElementType target)
-{
-	if (tree == NULL)
-		return NULL;
-
-	if (tree->Data == target)
-		return tree;
-	else if (tree->Data > target)
-		return BST_SearchNode(tree->Left, target);
-	else
-		return BST_SearchNode(tree->Right, target);
-}
-
-BSTNode* BST_SearchMinNode(BSTNode* tree, BSTNode* child)
-{
-	if (tree == NULL)
-		return NULL;
-
-	if (tree->Left == NULL)
-		return tree;
-	else
-		return BST_SearchMinNode(tree->Left);
-}
-
-void BST_InsertNode(BSTNode* tree, BSTNode*child)
-{
-	if (tree->Data < child->Data)
+private:
+	char* name;
+	int age;
+public:
+	Person(const char* myname, int myage)
+		:age(myage)
 	{
-		if (tree->Right == NULL)
-			tree->Right = child;
-		else
-			BST_InsertNode(tree->Right, child);
+		int len = strlen(myname) + 1; // 끝에 널값이 있어야 하기 때문에 +1로 추가
+		name = new char[len];
+		strcpy_s(name, len, myname); // name이 char* 즉 문자열 포인터였기 때문에 길이로
 	}
-	else if (tree->Data > child->Data)
+	Person() // void 생성자를 호출해야 해서 만들어짐
 	{
-		if (tree->Left == NULL)
-			tree->Left = child;
-		else
-			BST_InsertNode(tree->Left, child);
+		name = NULL;
+		age = 0;
+		cout << "called Person()" << endl;
 	}
-}
-
-BSTNode* BST_RemoveNode(BSTNode* tree, BSTNode* parent, ElementType target)
-{
-	BSTNode* Removed = NULL;
-
-	if (tree == NULL)
-		return NULL;
-
-	if (tree->Data > target)
-		Removed = BST_RemoveNode(tree->Left, tree, target);
-	else if (tree->Data < target)
-		Removed = BST_RemoveNode(tree->Right, tree, target);
-	else // 목표값을 찾은 경우
+	void SetPersonInfo(char*myname, int myage)
 	{
-		Removed = tree;
+		name = myname;
+		age = myage;
+	}
+	void ShowPersonInfo() const
+	{
+		cout << "이름: " << name << endl;
+		cout << "나이: " << age << endl;
+	}
+	~Person() 
+	{ // 소멸자 생성자에서 동적할당 했다면 소멸자에서 메모리 해체하는 것이 원칙이다.
+		delete[]name;
+		cout << "called destructor!" << endl;
+	}
+};
 
-		// 잎 노드인 경우 바로 삭제
-		if (tree->Left == NULL && tree->Right == NULL)
-		{
-			if (parent->Left == tree)
-				parent->Left = NULL;
-			else
-				parent->Right = NULL;
-		}
-		else
-		{
-			// 자식이 양쪽 다 있는 경우
-			if (tree->Left != NULL && tree->Right != NULL)
-			{
-				// 최소값 노드를 찾아 제거한 뒤 현재의 노드에 위치시킨다.
-				BSTNode* MinNode = BST_SearchMinNode(tree->Right);
-				MinNode = BST_RemoveNode(tree, NULL, MinNode->Data);
-				tree->Data = MinNode->Data;
-			}
-			else
-			{
-				// 자식이 하나만 있는 경우
-				BSTNode* Temp = NULL;
-				if (tree->Left != NULL)
-					Temp = tree->Left;
-				else
-					Temp = tree->Right;
+int main()
+{
+	/*Person man1("Lee dong woo", 29);
+	Person man2("Jang dong gun", 41);
+	man1.ShowPersonInfo();
+	man2.ShowPersonInfo();*/	
+	
+	Person* parr[3];
 
-				if (parent->Left == tree)
-					parent->Left = Temp;
-				else
-					parent->Right = Temp;
-			}
-		}
+	char namestr[100];
+	char* strptr;
+	int age, len;
+
+	for (int i = 0; i < 3; i++)
+	{
+		cout << "이름: ";
+		cin >> namestr;
+		cout << "나이: ";
+		cin >> age;
+
+		/*len = strlen(namestr) + 1;
+		strptr = new char[len];
+		strcpy_s(strptr, len, namestr);
+		parr[i].SetPersonInfo(strptr, age);*/
+		parr[i] = new Person(namestr, age);
+		// 동적할당
 	}
 
-	return Removed;
-}
+	parr[0]->ShowPersonInfo();
+	parr[1]->ShowPersonInfo();
+	parr[2]->ShowPersonInfo();
+	for (int i = 0; i < 3; i++)
+		delete parr[i];
 
-void BST_InorderPrintTree(BSTNode* node)
-{
-	if (node == NULL)
-		return;
-
-	// 왼쪽 하위 트리 출력
-	BST_InorderPrintTree(node->Left);
-
-	// 루트 노드 출력
-	printf("%d ", node->Data);
-
-	// 오른쪽 하위 트리 출력
-	BST_InorderPrintTree(node->Right);
+	return 0;
 }
