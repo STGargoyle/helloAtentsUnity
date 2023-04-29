@@ -1,8 +1,7 @@
 #pragma once
 #include<iostream>
-#include<cstring>
-#include<ctime>
-#include<cmath>
 #include<cstdlib>
-#define NAME_LEN 20
+#include<cmath>
+#include<ctime>
+#include<cstring>
 using namespace std;

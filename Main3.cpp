@@ -1,32 +1,49 @@
-#include "Default.h"
+#include"Default.h"
 
-class TwoNumber
+class Person
 {
 private:
-	int num1;
-	int num2;
-public: // 멤버변수와 매개변수가 같다.
-	TwoNumber(int num1, int num2)
-	{
-		this->num1 = num1; // 멤버변수가 같다는 선언을 해주는 것
-		this->num2 = num2; // 즉 디스에 멤버변수가 포함된다는 것
-	}
-	/*TwoNumber(int num1, int num2)
-		:num1(num1),num2(num2)
-	{ // 이니셜라이즈를 활용할수도 있으나 위가 더 빠르다.
-	  // 정수나 실수라면 이렇게 적는게 더 낫다.
-	}*/
+	char* name;
+	int age;
 
-	void ShowTwoNumber()
+public:
+	Person(const char* myname, int myage)
+		:age(myage)
 	{
-		cout << this->num1 << endl;
-		cout << this->num2 << endl;
+		int len = strlen(myname) + 1;
+		name = new char[len];
+		strcpy_s(name, len, myname);
+	}
+
+	Person(const Person& copy)
+		:age(copy.age)
+	{
+		int len = strlen(copy.name) + 1;
+		name = new char[len];
+		strcpy_s(name, len, copy.name);
+	}
+	// 이 부분이 Deepcopy 즉 깊은 복사이다.
+	// 따로따로 할당하게 만든다
+
+	void ShowPersonInfo() const
+	{
+		cout << "이름: " << name << endl;
+		cout << "나이: " << age << endl;
+	}
+	~Person()
+	{
+		delete[] name;
+		cout << "Called destructor!" << endl;
 	}
 };
 
 int main()
 {
-	TwoNumber two(2, 4);
-	two.ShowTwoNumber();
+	Person man1("Lee dong woo", 29);
+	Person man2 = man1; 
+	// 얕은 복사 라고 함 디폴트 복사생성자에 맡겼기 때문에 제대로 실행 안됨
+	// 깊은 복사 는 디폴트에 맡기지 않고 복사생성자를 따로 생성해서 실행하는 것
+	man1.ShowPersonInfo();
+	man2.ShowPersonInfo();
 	return 0;
 }

@@ -1,35 +1,44 @@
-#include "Default.h"
+#include"Default.h"
 
-class SelfRef
+class SoSimple
 {
 private:
 	int num;
+
 public:
-	SelfRef(int n) : num(n)
+	SoSimple(int n) :num(n)
+	{	}
+	SoSimple(const SoSimple& copy) :num(copy.num)
 	{
-		cout << "객체생성" << endl;
+		cout << "Called SoSimple(const SoSimple& copy)" << endl;
 	}
-	SelfRef& Adder(int n) //참조자가 찍혀 있으면
+	SoSimple& AddNum(int n)
 	{
 		num += n;
-		return*this; // 애스터리스크를 찍는다.
+		return *this;
 	}
-	SelfRef& ShowTwoNumber()
+	void ShowData()
 	{
-		cout << num << endl;
-		return*this;
+		cout << "num: " << num << endl;
 	}
 };
 
+//void SimpleFuncObj(SoSimple ob)
+//{
+//	ob.ShowData();
+//}
+
+SoSimple SimpleFuncObj(SoSimple ob) // 인자로 전달하는 경우
+{
+	cout << "return 이전" << endl;
+	return ob;
+} // 객체를 반환할때 참조형이 아닌 경우
+// 이렇게 두가지가 추가적으로 복사생성자를 호출하게 만드는 경우이다.
+
 int main()
 {
-	SelfRef obj(3);
-	SelfRef& ref = obj.Adder(2);
-
-	obj.ShowTwoNumber();
-	ref.ShowTwoNumber(); 
-	//참조자를 썻기 때문에 사실은 obj와 ref 둘은 같은것이다.
-
-	ref.Adder(1).ShowTwoNumber().Adder(2).ShowTwoNumber();
+	SoSimple obj(7);
+	SimpleFuncObj(obj), AddNum(30), ShowData();
+	obj.ShowData();
 	return 0;
 }

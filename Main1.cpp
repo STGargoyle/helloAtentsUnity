@@ -1,42 +1,73 @@
-#include "Default.h"
+#include"Default.h"
+#include"Quest.h"
 
-class AAA
+namespace COM_POS
 {
-public:
-	AAA()
+	enum { CLERK, SENIOR, ASSIST, MANAGER };
+	void ShowPosition(int pos)
 	{
-		cout << "empty object" << endl;
+		switch (pos)
+		{
+		case CLERK:
+			cout << "사원 " << endl;
+			break;
+		case SENIOR:
+			cout << "주임 " << endl;
+			break;
+		case ASSIST:
+			cout << "대리 " << endl;
+			break;
+		case MANAGER:
+			cout << "과장 " << endl;
+			break;
+		}
 	}
-	void ShowYourName()
-	{
-		cout << "I'm class AAA" << endl;
-	}
-};
-	
-class BBB
+}
+
+class NameCard
 {
 private:
-	AAA& ref; // 참조자
-	const int& num; // 상수 
-	// 둘다 선언과 동시에 초기화 해야하기 때문에 아래쪽에서 이니셜라이즈로 초기화를 해줬다.
+	char* name;
+	char* company;
+	char* phoneNum;
+	int position;
+
 public:
-	BBB(AAA &r, const int &n)
-		:ref(r), num(n) // 멤버 이니셜라이즈로 초기화
+	NameCard(const char* _name, const char* _company, const char* _phone, int pos)
+		:position(pos)
 	{
-		// ref = r; 이런식을 작성하면 이니셜라이즈랑 대치되어서 에러가 난다.
+		int len = strlen(_name) + 1;
+		name = new char[len];
+		strcpy_s(name, len, _name);
+		
+		company = new char[strlen(_company)+1];
+		strcpy_s(company, strlen(_company) + 1, _company);
+		phoneNum = new char[strlen(_phone) + 1];
+		strcpy_s(phoneNum, strlen(_phone) + 1, _phone);
 	}
-	void ShowYourName()
+
+	void ShowNameCardInfo()
 	{
-		ref.ShowYourName();
-		cout << "and" << endl;
-		cout << "I ref num " << num << endl;
+		cout << "성명: "; cin >> name;
+		cout << "회사이름: "; cin >> company;
+		cout << "번호: "; cin >> phoneNum;
+		cout << "직급: "; COM_POS::ShowPosition(position);
+	}
+
+	~NameCard()
+	{
+		delete[] name, company, phoneNum;
 	}
 };
 
 int main()
 {
-	AAA obj1;
-	BBB obj2(obj1, 20);
-	obj2.ShowYourName();
+	NameCard manClerk("Lee", "ABCEng", "010-1111-2222", COM_POS::CLERK);
+	NameCard manSenior("Hong", "OrangeEng", "010-3333-4444", COM_POS::SENIOR);
+	NameCard manAssist("Kim", "SoGoodComp", "010-5555-6666", COM_POS::ASSIST);
+	manClerk.ShowNameCardInfo();
+	manSenior.ShowNameCardInfo();
+	manAssist.ShowNameCardInfo();
+	
 	return 0;
 }
