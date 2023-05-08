@@ -1,49 +1,63 @@
 #include"Default.h"
 
-class Person
+class Point;
+class PointOP
 {
 private:
-	char* name;
-	int age;
-
+	int opcnt;
 public:
-	Person(const char* myname, int myage)
-		:age(myage)
-	{
-		int len = strlen(myname) + 1;
-		name = new char[len];
-		strcpy_s(name, len, myname);
-	}
+	PointOP() : opcnt(0)
+	{  }
 
-	Person(const Person& copy)
-		:age(copy.age)
+	Point PointAdd(const Point&, const Point&);
+	Point PointSub(const Point&, const Point&);
+	~PointOP()
 	{
-		int len = strlen(copy.name) + 1;
-		name = new char[len];
-		strcpy_s(name, len, copy.name);
-	}
-	// 이 부분이 Deepcopy 즉 깊은 복사이다.
-	// 따로따로 할당하게 만든다
-
-	void ShowPersonInfo() const
-	{
-		cout << "이름: " << name << endl;
-		cout << "나이: " << age << endl;
-	}
-	~Person()
-	{
-		delete[] name;
-		cout << "Called destructor!" << endl;
+		cout << "Operation times: " << opcnt << endl;
 	}
 };
 
+class Point
+{
+private:
+	int x;
+	int y;
+public:
+	Point(const int& xpos, const int& ypos) : x(xpos), y(ypos)
+	{   }
+	friend Point PointOP::PointAdd(const Point&, const Point&);
+	friend Point PointOP::PointSub(const Point&, const Point&);
+	// 반환형은 Point로 반환되지만 PointOP 클래스 내부의 PointAdd,PointSub 함수에
+	// 접근하기 위해서 friend 선언을 한 것이다.
+	friend void ShowPointPos(const Point&);
+};
+
+Point PointOP::PointAdd(const Point& pnt1, const Point& pnt2)
+{
+	opcnt++;
+	return Point(pnt1.x + pnt2.x, pnt1.y + pnt2.y);
+}
+
+Point PointOP::PointSub(const Point& pnt1, const Point& pnt2)
+{
+	opcnt++;
+	return Point(pnt1.x - pnt2.x, pnt1.y - pnt2.y);
+}
+
 int main()
 {
-	Person man1("Lee dong woo", 29);
-	Person man2 = man1; 
-	// 얕은 복사 라고 함 디폴트 복사생성자에 맡겼기 때문에 제대로 실행 안됨
-	// 깊은 복사 는 디폴트에 맡기지 않고 복사생성자를 따로 생성해서 실행하는 것
-	man1.ShowPersonInfo();
-	man2.ShowPersonInfo();
+	Point pos1(1, 2);
+	Point pos2(2, 4);
+	PointOP op;
+
+	ShowPointPos(op.PointAdd(pos1, pos2));
+	ShowPointPos(op.PointAdd(pos2, pos1));
+	
 	return 0;
+}
+
+void ShowPointPos(const Point& pos)
+{
+	cout << "x: " << pos.x << ", ";
+	cout << "y: " << pos.y << endl;
 }

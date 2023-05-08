@@ -1,35 +1,46 @@
 #include"Default.h"
 
-class SoSimple
+class Girl; //코드는 위에서 아래로 읽어들이기 때문에 이렇게 먼저 작성해야함
+class Boy
 {
 private:
-	int num1;
-	int num2;
-
+	int height;
+	friend class Girl;
 public:
-	SoSimple(int n1, int n2) : num1(n1), num2(n2)
-	{ }
-
-	SoSimple(const SoSimple& copy)
-		:num1(copy.num1), num2(copy.num2)
-	{
-		cout << "Called SoSimple(SoSimple &copy)" << endl;
-	}// 이 부분은 어차피 디폴트 값이기 때문에 없어도 상관없이 작동한다.
-	// 왜냐면 C++에서는 생성자, 복사생성자, 소멸자가 디폴트값이기 때문이다.
-
-	void ShowSimpleData()
-	{
-		cout << num1 << endl;
-		cout << num2 << endl;
-	}
+	Boy(int len) : height(len)
+	{	}
+	void ShowYourFriendInfo(Girl& frn);
 };
+
+class Girl
+{
+private:
+	char phNum[20];
+public:
+	Girl(const char* num)
+	{
+		strcpy_s(phNum, sizeof(phNum), num);
+	}
+	void ShowYourFriendInfo(Boy& frn);
+	friend class Boy;
+};
+
+void Boy::ShowYourFriendInfo(Girl& frn)
+{
+	cout << "Her phone number: " << frn.phNum << endl;
+}
+
+void Girl::ShowYourFriendInfo(Boy& frn)
+{
+	cout << "His height: " << frn.height << endl;
+}
 
 int main()
 {
-	SoSimple sim1(15, 20);
-	cout << "생성 및 초기화 직전" << endl;
-	SoSimple sim2 = sim1; // sim2가 sim1으로 초기화되면서 복사생성자가 생긴다.
-	cout << "생성 및 초기화 직후" << endl;
-	sim2.ShowSimpleData();
+	Boy boy(170);
+	Girl girl("010-1234-5678");
+
+	boy.ShowYourFriendInfo(girl);
+	girl.ShowYourFriendInfo(boy);
 	return 0;
 }

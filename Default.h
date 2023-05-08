@@ -1,7 +1,7 @@
 #pragma once
 #include<iostream>
 #include<cstdlib>
+#include<cstring>
 #include<cmath>
 #include<ctime>
-#include<cstring>
 using namespace std;

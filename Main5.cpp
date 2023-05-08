@@ -1,44 +1,24 @@
 #include"Default.h"
+// c++ 에는 readonly가 없다.
+// explicit ==> 복사가 안되게 막는 키워드
+// const   mutable
 
-class SoSimple
+class CountryArea
 {
-private:
-	int num;
-
-public:
-	SoSimple(int n) :num(n)
-	{	}
-	SoSimple(const SoSimple& copy) :num(copy.num)
-	{
-		cout << "Called SoSimple(const SoSimple& copy)" << endl;
-	}
-	SoSimple& AddNum(int n)
-	{
-		num += n;
-		return *this;
-	}
-	void ShowData()
-	{
-		cout << "num: " << num << endl;
-	}
+public: // 멤벼변수에서 초기화 불가능, 하지만 const static을 붙이면 가능
+	const static int RUSSIA         = 1707540;
+	const static int CANADA         = 998467;
+	const static int CHINA          = 957290;
+	const static int SOUTH_KOREA    = 9922;
+	// 멤버변수가 초기화 되려면 원칙은 생성자의 멤버 이니셜라이즈 나 생성자
+	// 중괄호 안에서 초기화 가능
 };
-
-//void SimpleFuncObj(SoSimple ob)
-//{
-//	ob.ShowData();
-//}
-
-SoSimple SimpleFuncObj(SoSimple ob) // 인자로 전달하는 경우
-{
-	cout << "return 이전" << endl;
-	return ob;
-} // 객체를 반환할때 참조형이 아닌 경우
-// 이렇게 두가지가 추가적으로 복사생성자를 호출하게 만드는 경우이다.
 
 int main()
 {
-	SoSimple obj(7);
-	SimpleFuncObj(obj), AddNum(30), ShowData();
-	obj.ShowData();
+	cout << "러시아 면적: " << CountryArea::RUSSIA << "㎢" << endl;
+	cout << "캐나다 면적: " << CountryArea::CANADA << "㎢" << endl;
+	cout << "중국 면적: " << CountryArea::CHINA << "㎢" << endl;
+	cout << "한국 면적: " << CountryArea::SOUTH_KOREA << "㎢" << endl;
 	return 0;
 }

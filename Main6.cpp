@@ -1,36 +1,29 @@
 #include"Default.h"
 
-class Temporary
+class SoSimple
 {
 private:
-	int num;
-
+	int num1;
+	mutable int num2;
+	// 한시적으로 const를 무력화시킨다. 하지만 그게 단점이다.
 public:
-	Temporary(int n) :num(n)
+	SoSimple(int n1, int n2) :num1(n1), num2(n2)
+	{	}
+	void ShowSimpleData() const
 	{
-		cout << "create obj: " << num << endl;
+		cout << num1 << ", " << num2 << endl;
 	}
-	~Temporary()
+	void CopyToNum2() const
 	{
-		cout << "destroy obj: " << num << endl;
-	}
-	void ShowTempInfo()
-	{
-		cout << "My num is " << num << endl;
+		num2 = num1;
 	}
 };
 
 int main()
 {
-	Temporary(100);
-	cout << "********** after make!" << endl << endl;
-
-	          // 임시 객체, 그때 쓰고 바로 버린다.
-	Temporary(200).ShowTempInfo();
-	cout << "********** after make!" << endl << endl;
-
-	                // 참조자로 받았기 때문에 바로 사라지지 않는다.
-	const Temporary& ref = Temporary(300);
-	cout << "********** end of main!" << endl << endl;
+	SoSimple sm(1, 2);
+	sm.ShowSimpleData();
+	sm.CopyToNum2();
+	sm.ShowSimpleData();
 	return 0;
 }

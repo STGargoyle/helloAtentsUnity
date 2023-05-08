@@ -1,73 +1,40 @@
 #include"Default.h"
-#include"Quest.h"
 
-namespace COM_POS
-{
-	enum { CLERK, SENIOR, ASSIST, MANAGER };
-	void ShowPosition(int pos)
-	{
-		switch (pos)
-		{
-		case CLERK:
-			cout << "사원 " << endl;
-			break;
-		case SENIOR:
-			cout << "주임 " << endl;
-			break;
-		case ASSIST:
-			cout << "대리 " << endl;
-			break;
-		case MANAGER:
-			cout << "과장 " << endl;
-			break;
-		}
-	}
-}
-
-class NameCard
+class SoSimple
 {
 private:
-	char* name;
-	char* company;
-	char* phoneNum;
-	int position;
-
+	int num;
 public:
-	NameCard(const char* _name, const char* _company, const char* _phone, int pos)
-		:position(pos)
+	SoSimple(int n) : num(n)
+	{	}
+	SoSimple& AddNum(int n)
 	{
-		int len = strlen(_name) + 1;
-		name = new char[len];
-		strcpy_s(name, len, _name);
-		
-		company = new char[strlen(_company)+1];
-		strcpy_s(company, strlen(_company) + 1, _company);
-		phoneNum = new char[strlen(_phone) + 1];
-		strcpy_s(phoneNum, strlen(_phone) + 1, _phone);
+		num += n;
+		return *this;
 	}
 
-	void ShowNameCardInfo()
+	void SimpleFunc()
 	{
-		cout << "성명: "; cin >> name;
-		cout << "회사이름: "; cin >> company;
-		cout << "번호: "; cin >> phoneNum;
-		cout << "직급: "; COM_POS::ShowPosition(position);
+		cout << "SimpleFunc: " << num << endl;
 	}
-
-	~NameCard()
+	void SimpleFunc() const // 함수 뒤에 const가 추가 되면 멤버 변수가 변하면 안된다
 	{
-		delete[] name, company, phoneNum;
+		cout << "const SimpleFunc: " << num << endl;
 	}
 };
 
+void YourFunc(const SoSimple& obj)
+{
+	obj.SimpleFunc();
+}
+
 int main()
 {
-	NameCard manClerk("Lee", "ABCEng", "010-1111-2222", COM_POS::CLERK);
-	NameCard manSenior("Hong", "OrangeEng", "010-3333-4444", COM_POS::SENIOR);
-	NameCard manAssist("Kim", "SoGoodComp", "010-5555-6666", COM_POS::ASSIST);
-	manClerk.ShowNameCardInfo();
-	manSenior.ShowNameCardInfo();
-	manAssist.ShowNameCardInfo();
-	
+	SoSimple obj1(2);
+	const SoSimple obj2(7);
+	obj1.SimpleFunc();
+	obj2.SimpleFunc();
+	YourFunc(obj1);
+	YourFunc(obj2);
 	return 0;
 }
